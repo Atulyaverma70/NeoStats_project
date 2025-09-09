@@ -135,6 +135,6 @@ This creates `vector_store.pkl` for faster startup.
 ---
 
 ## 🖼 Screenshot
-![Streamlit Chatbot UI](assets/screenshot1.png)
+![Streamlit Chatbot UI](assets/screenshot.png)
 
 

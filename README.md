@@ -1,15 +1,17 @@
-# 🤖 Customer Support Chatbot (RAG + Multi-Provider)
+# 🤖 Customer Support Chatbot
 
 An AI-powered customer support chatbot built with **Streamlit** and **LangChain**.
 It can:
 
 * Answer questions directly using **pre-loaded knowledge** (FAQs, manuals, troubleshooting docs).
-* Accept **uploaded PDF/TXT/JSON files** and index them on the fly.
 * Let users **directly type queries** without uploading files — it will fetch answers from pre-loaded knowledge or the web.
+* Accept **uploaded PDF/TXT/JSON files** and index them on the fly.
 * Choose between **Groq (Llama-3.1)**, **OpenAI GPT-3.5**, or **Google Gemini** models.
 * Fall back to **Bing web search** if no internal answer is found.
 
 ---
+## 🖼 Screenshot
+![Streamlit Chatbot UI](assets/screenshot.png)
 
 ## 🚀 Features
 
@@ -27,6 +29,8 @@ It can:
 
 ```
 .
+├──assets/
+│   └── screenshot.png
 ├── app.py                  # Streamlit main app
 ├── models/
 │   └── llm.py              # Functions to get Groq/OpenAI/Gemini chat models
@@ -88,7 +92,7 @@ Open the provided localhost URL in your browser.
 
 ---
 
-## 📝 Usage
+## Usage
 
 ### 1. Direct Search (No Upload Needed)
 
@@ -109,7 +113,7 @@ Open the provided localhost URL in your browser.
 
 ---
 
-## 📝 Precomputing Embeddings (Optional)
+## Precomputing Embeddings (Optional)
 
 You can precompute all `knowledge_docs` embeddings and save them locally:
 
@@ -134,7 +138,5 @@ This creates `vector_store.pkl` for faster startup.
 
 ---
 
-## 🖼 Screenshot
-![Streamlit Chatbot UI](assets/screenshot.png)
 
 

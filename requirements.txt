@@ -6,3 +6,5 @@ langchain-core
 faiss-cpu
 requests
 pdfminer.six
+numpy
+python-dotenv

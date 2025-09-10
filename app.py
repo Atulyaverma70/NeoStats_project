@@ -82,8 +82,8 @@ def instructions_page():
     Set your API keys in `config/config.py`:
     - `OPENAI_API_KEY`
     - `GEMINI_API_KEY`
+    - `GROQ_API_KEY`
     - `SERPAPI_KEY`
-    - ``
     ## How to Use
     1. Go to the **Chat** page.
     2. Upload a PDF/TXT knowledge base if needed.

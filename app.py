@@ -83,6 +83,7 @@ def instructions_page():
     - `OPENAI_API_KEY`
     - `GEMINI_API_KEY`
     - `GROQ_API_KEY`
+    - `GROQ_API_KEY`
     ## How to Use
     1. Go to the **Chat** page.
     2. Upload a PDF/TXT knowledge base if needed.

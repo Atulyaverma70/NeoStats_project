@@ -1,4 +1,4 @@
-# 🤖 Customer Support Chatbot
+# Customer Support Chatbot
 
 An AI-powered customer support chatbot built with **Streamlit** and **LangChain**.
 It can:
@@ -7,30 +7,28 @@ It can:
 * Let users **directly type queries** without uploading files — it will fetch answers from pre-loaded knowledge or the web.
 * Accept **uploaded PDF/TXT/JSON files** and index them on the fly.
 * Choose between **Groq (Llama-3.1)**, **OpenAI GPT-3.5**, or **Google Gemini** models.
-* Fall back to **Bing web search** if no internal answer is found.
+* Fall back to SerpAPI for web search if no answer is found in the internal knowledge base.
 
 ---
-## 🖼 Screenshot
+## Screenshot
 ![Streamlit Chatbot UI](assets/screenshot.png)
 
-## 🚀 Features
+## Features
 
 * **Retrieval-Augmented Generation (RAG)**: answers from `knowledge_docs` or uploaded files.
 * **Multi-model Support**: Groq (default), OpenAI, Gemini.
 * **Embeddings**: uses GroqEmbeddings if available; falls back to OpenAIEmbeddings.
 * **Vector Store**: FAISS for fast similarity search.
-* **Web Search**: optional Bing Search integration.
+* **Web Search**: optional SerpAI Search integration.
 * **Streamlit UI**: chat history, file upload, provider selector.
 * **Flexible Usage**: users can upload files or just type questions directly.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 .
-├──assets/
-│   └── screenshot.png
 ├── app.py                  # Streamlit main app
 ├── models/
 │   └── llm.py              # Functions to get Groq/OpenAI/Gemini chat models
@@ -48,12 +46,14 @@ It can:
 │   │   └── faq.json
 │   └── troubleshooting/
 │       └── troubleshooting.txt
+├──assets/
+│   └── screenshot.png
 └── requirements.txt
 ```
 
 ---
 
-## 🔑 Setup API Keys
+## Setup API Keys
 
 Edit `config/config.py` and set:
 
@@ -61,12 +61,12 @@ Edit `config/config.py` and set:
 OPENAI_API_KEY = "your_openai_key"
 GROQ_API_KEY = "your_groq_key"
 GEMINI_API_KEY = "your_gemini_key"
-BING_API_KEY = "your_bing_key"  # optional, for web_search
+SERPAPI_KEY = "SERPAPI_KEY"  # optional, for web_search
 ```
 
 ---
 
-## 🛠 Installation
+## Installation
 
 ```bash
 git clone <your-repo>
@@ -82,7 +82,7 @@ pip install langchain_groq
 
 ---
 
-## ▶️ Running the App
+## Running the App
 
 ```bash
 streamlit run app.py
@@ -125,7 +125,7 @@ This creates `vector_store.pkl` for faster startup.
 
 ---
 
-## ⚙️ How It Works (Flow)
+## How It Works (Flow)
 
 1. **app.py** launches the Streamlit UI.
 2. User chooses **model** and optionally uploads a file.

@@ -1,4 +1,3 @@
-# app.py
 import streamlit as st
 import os
 import sys
@@ -8,7 +7,7 @@ from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 
-# allow imports from project folders
+# imports from project folders
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 # model helpers
@@ -17,7 +16,7 @@ from utils.rag_utils import get_rag_answer
 from utils.web_search import web_search
 from config import OPENAI_API_KEY, GEMINI_API_KEY, GROQ_API_KEY
 
-# Try to import GroqEmbeddings dynamically
+# Importing GroqEmbeddings dynamically
 try:
     from langchain_groq import GroqEmbeddings
     has_groq = True
@@ -74,7 +73,7 @@ def instructions_page():
     st.title("Customer Support Chatbot")
     st.markdown("Welcome! Follow these instructions to set up and use the chatbot.")
     st.markdown("""
-    ## 🔧 Installation
+    ## Installation
     ```bash
     pip install -r requirements.txt
     ```
@@ -124,12 +123,12 @@ def chat_page():
         elif provider.startswith("Google Gemini"):
             chat_model = get_chat_model("gemini")
         else:
-            chat_model = get_chat_model("groq")  # default
+            chat_model = get_chat_model("groq") 
     except Exception as e:
         st.error(str(e))
         return
 
-    # display chat history
+    # displaying chat history
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
@@ -179,7 +178,7 @@ def main():
         page = st.radio("Go to:", ["Chat", "Instructions"], index=0)
         if page == "Chat":
             st.divider()
-            if st.button("🗑️ Clear Chat History", use_container_width=True):
+            if st.button("Clear Chat History", use_container_width=True):
                 st.session_state.messages = []
                 st.session_state.vectorstore = None
                 st.rerun()

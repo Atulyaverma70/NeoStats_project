@@ -1,4 +1,3 @@
-# web_searching.py
 import requests
 from config import config
 

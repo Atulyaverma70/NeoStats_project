@@ -10,14 +10,12 @@ KNOWLEDGE_DIR = "knowledge_docs"
 def load_documents():
     """Load all text and PDF documents"""
     docs = []
-    # TXT files
     for folder in ["faqs", "troubleshooting"]:
         path = os.path.join(KNOWLEDGE_DIR, folder)
         for file in os.listdir(path):
             if file.endswith(".txt"):
                 loader = TextLoader(os.path.join(path, file))
                 docs.extend(loader.load())
-    # PDF files
     path = os.path.join(KNOWLEDGE_DIR, "manuals")
     for file in os.listdir(path):
         if file.endswith(".pdf"):

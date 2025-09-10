@@ -1,22 +1,34 @@
+# web_searching.py
 import requests
 from config import config
 
-BING_API_KEY = config.BING_API_KEY if hasattr(config, "BING_API_KEY") else None
-BING_ENDPOINT = "https://api.bing.microsoft.com/v7.0/search"
+SERPAPI_KEY = getattr(config, "SERPAPI_KEY", None)
+SERPAPI_ENDPOINT = "https://serpapi.com/search.json"  # SerpAPI JSON endpoint
 
 def web_search(query):
-    """Perform simple web search via Bing API"""
-    if not BING_API_KEY:
-        return ""
-    headers = {"Ocp-Apim-Subscription-Key": BING_API_KEY}
-    params = {"q": query, "count": 3}
+    """Perform web search via SerpAPI"""
+    if not SERPAPI_KEY:
+        return "SERPAPI_KEY not set"
+    
+    params = {
+        "q": query,
+        "api_key": SERPAPI_KEY,
+        "engine": "google",  # Using Google engine in SerpAPI
+        "num": 3             # Number of results
+    }
+
     try:
-        response = requests.get(BING_ENDPOINT, headers=headers, params=params)
+        response = requests.get(SERPAPI_ENDPOINT, params=params)
         response.raise_for_status()
         results = response.json()
+
         snippets = []
-        for v in results.get("webPages", {}).get("value", []):
-            snippets.append(v.get("snippet", ""))
+        for item in results.get("organic_results", []):
+            snippets.append(item.get("snippet", ""))
+
+        if not snippets:
+            return "No results found"
         return "\n".join(snippets)
+
     except Exception as e:
         return f"Web search error: {str(e)}"

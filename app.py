@@ -25,39 +25,32 @@ except ImportError:
     has_groq = False
 
 
-def process_uploaded_file(uploaded_file, provider="groq"):
+def process_uploaded_file(uploaded_file, provider=None):
     """
-    Process uploaded PDF or TXT file and return a FAISS vectorstore.
-    Uses GroqEmbeddings by default if available; falls back to OpenAIEmbeddings.
+    Process uploaded PDF, TXT, or MD file and create a FAISS vectorstore.
     """
-    from langchain.embeddings.openai import OpenAIEmbeddings
+    if uploaded_file is None:
+        return None
 
-    # Load document
-    if uploaded_file.name.endswith(".pdf"):
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-            tmp_file.write(uploaded_file.read())
-            tmp_path = tmp_file.name
-        loader = PyPDFLoader(tmp_path)
-        docs = loader.load()
+    # Extract text
+    if uploaded_file.type == "application/pdf":
+        import fitz
+        pdf_document = fitz.open(stream=uploaded_file.read(), filetype="pdf")
+        text = "".join([page.get_text() for page in pdf_document])
     else:
-        text = uploaded_file.read().decode("utf-8")
-        loader = TextLoader(text)
-        docs = loader.load()
+        text = uploaded_file.read().decode("utf-8", errors="ignore")
 
-    # Split into chunks
-    splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-    chunks = splitter.split_documents(docs)
+    # Split text into chunks
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
+    chunks = splitter.create_documents([text])
 
-    # Select embeddings
-    if provider == "groq" and has_groq:
-        embeddings = GroqEmbeddings(api_key=GROQ_API_KEY)
-    elif provider == "openai":
-        embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
-    else:
-        # default fallback
-        embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
+    # Initialize embeddings (currently ignoring provider)
+    from langchain.embeddings import HuggingFaceEmbeddings
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
     # Create FAISS vectorstore
+    from langchain_community.vectorstores import FAISS
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore
 

@@ -9,3 +9,6 @@ requests
 pdfminer.six
 numpy
 python-dotenv
+pypdf
+PyMuPDF
+sentence-transformers

@@ -1,11 +1,12 @@
 streamlit
+langchain
 langchain-core
 langchain-community
 langchain-openai
 langchain-groq
 langchain-google-genai
 langchain-text-splitters
-langchain
+langchain-huggingface
 faiss-cpu
 requests
 pdfminer.six
@@ -14,3 +15,4 @@ python-dotenv
 pypdf
 PyMuPDF
 sentence-transformers
+PyPDF2

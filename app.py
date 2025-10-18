@@ -4,19 +4,19 @@ import sys
 import tempfile
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 
-# imports from project folders
+# Add project root path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-# model helpers
+# Model helpers
 from models.llm import get_chat_model
 from utils.rag_utils import get_rag_answer
 from utils.web_search import web_search
 from config import OPENAI_API_KEY, GEMINI_API_KEY, GROQ_API_KEY
 
-# Importing GroqEmbeddings dynamically
+# Import Groq embeddings if available
 try:
     from langchain_groq import GroqEmbeddings
     has_groq = True
@@ -40,16 +40,14 @@ def process_uploaded_file(uploaded_file, provider=None):
         text = uploaded_file.read().decode("utf-8", errors="ignore")
 
     # Split text into chunks
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
     splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
     chunks = splitter.create_documents([text])
 
-    # Initialize embeddings (currently ignoring provider)
+    # Initialize embeddings
     from langchain.embeddings import HuggingFaceEmbeddings
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
     # Create FAISS vectorstore
-    from langchain_community.vectorstores import FAISS
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore
 
@@ -83,6 +81,7 @@ def instructions_page():
     - `GEMINI_API_KEY`
     - `GROQ_API_KEY`
     - `SERPAPI_KEY`
+
     ## How to Use
     1. Go to the **Chat** page.
     2. Upload a PDF/TXT knowledge base if needed.
@@ -100,7 +99,7 @@ def chat_page():
     )
     response_mode = st.sidebar.radio("Response Mode:", ["Concise", "Detailed"])
 
-    # keep chat history
+    # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
     if "vectorstore" not in st.session_state:
@@ -116,30 +115,30 @@ def chat_page():
         st.session_state.vectorstore = process_uploaded_file(uploaded_file, provider=provider_key)
         st.sidebar.success(f"Indexed: {uploaded_file.name}")
 
-    # get model
+    # Get model
     try:
         if provider.startswith("OpenAI"):
             chat_model = get_chat_model("openai")
         elif provider.startswith("Google Gemini"):
             chat_model = get_chat_model("gemini")
         else:
-            chat_model = get_chat_model("groq") 
+            chat_model = get_chat_model("groq")
     except Exception as e:
         st.error(str(e))
         return
 
-    # displaying chat history
+    # Display chat history
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # chat input
+    # Chat input
     if prompt := st.chat_input("Type your message here..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # build context: uploaded vectorstore first, else rag_utils/web_search
+        # Build context
         context = ""
         if st.session_state.vectorstore:
             retriever = st.session_state.vectorstore.as_retriever()
@@ -173,6 +172,7 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded"
     )
+
     with st.sidebar:
         st.title("Navigation")
         page = st.radio("Go to:", ["Chat", "Instructions"], index=0)

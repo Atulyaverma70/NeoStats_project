@@ -29,7 +29,7 @@ def process_uploaded_file(uploaded_file):
     else:
         text = uploaded_file.read().decode("utf-8", errors="ignore")
 
-    splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=50)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=1000)
     chunks = splitter.create_documents([text])
 
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")

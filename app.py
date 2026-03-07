@@ -78,7 +78,7 @@ def chat_page():
         st.session_state.vectorstore = None
 
     uploaded_file = st.sidebar.file_uploader(
-        "Upload knowledge base (PDF/TXT)", type=["pdf", "txt"]
+        "Upload knowledge base (PDF/TXT)", type=["pdf", "txt"], max_upload_size=20
     )
 
     if uploaded_file:

@@ -66,7 +66,7 @@ def chat_page():
 
     provider = st.sidebar.selectbox(
         "Select AI Provider",
-        ["Groq (Default)", "OpenAI", "Google Gemini"],
+        ["OpenAI (Default)", "OpenAIGroq", "Google Gemini"],
         index=0
     )
     response_mode = st.sidebar.radio("Response Mode", ["Concise", "Detailed"])

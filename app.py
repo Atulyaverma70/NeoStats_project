@@ -52,7 +52,7 @@ def get_chat_response(chat_model, messages, system_prompt):
 
 
 def instructions_page():
-    st.title("Customer Support Chatbot")
+    st.title("RAG-Based Multi-LLM Knowledge Assistant")
     st.markdown("""
     ## How to Use
     1. Go to Chat page
@@ -62,7 +62,7 @@ def instructions_page():
 
 
 def chat_page():
-    st.title("🤖 Customer Support Chatbot")
+    st.title("RAG-Based Multi-LLM Knowledge Assistant")
 
     provider = st.sidebar.selectbox(
         "Select AI Provider",
@@ -141,7 +141,7 @@ def chat_page():
 
 
 def main():
-    st.set_page_config(page_title="Customer Support Chatbot", layout="wide")
+    st.set_page_config(page_title="RAG-Based Multi-LLM Knowledge Assistant", layout="wide")
 
     with st.sidebar:
         st.title("Navigation")
